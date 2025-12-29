@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r lint"
+  },
+  "workspaces": [
+    "packages/interactive",
+    "packages/demo"
+  ],
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
