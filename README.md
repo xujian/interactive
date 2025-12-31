@@ -75,7 +75,7 @@ function MyComponent() {
 ## API Reference
 ```tsx
 $.dialog(DialogContent, {}, {
-  tiele: 'Edit profile',
+  title: 'Edit profile',
   centered: true,
 })
 ```
