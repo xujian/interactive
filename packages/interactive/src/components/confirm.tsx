@@ -1,5 +1,5 @@
 import { ConfirmConfig, MakeInteractiveContentProps } from 'index';
-import { Button } from '@components/ui/button';
+import { Button } from './ui/button';
 
 export interface ConfirmContentProps {
   message: string;
