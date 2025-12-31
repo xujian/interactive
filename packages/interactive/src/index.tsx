@@ -18,8 +18,8 @@ import {
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from './components/ui/drawer'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './components/ui/sheet'
 import { X } from 'lucide-react'
-import { cn } from '@lib/utils'
-import { ConfirmContent } from '@components/confirm'
+import { cn } from './lib/utils'
+import { ConfirmContent } from './components/confirm'
 
 export interface BaseInteractiveConfig {
   dismissible?: boolean
@@ -278,13 +278,13 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
   }
 
   const makeWidth = (value?: number | string) => {
-    return {
-      width: config?.width
-        ? typeof config.width === 'number'
-          ? `${config.width}px`
-          : config.width
-        : '50vw',
-    }
+    return value
+      ? {
+          width: typeof value === 'number'
+            ? `${value}px`
+            : value,
+        }
+      : {}
   }
 
   // Helper for Vaul (Drawer) dismissal
@@ -315,7 +315,10 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         open={isOpen && type === 'drawer'}
         onOpenChange={setIsOpen}
         dismissible={isDismissible}>
-        <DrawerContent className={cn('interactive-drawer flex-col items-center justify-center',config?.className)}>
+        <DrawerContent className={cn('interactive-drawer flex-col items-center justify-center',config?.className)}
+          style={{
+            ...makeWidth(config?.width)
+          }}>
           <DrawerHeader className={cn(config?.title ? '' : 'hidden')}>
             <DrawerTitle>{config?.title}</DrawerTitle>
           </DrawerHeader>
@@ -328,7 +331,10 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         <DialogContent
           className={cn('interactive-dialog', config?.className)}
           onInteractOutside={handleInteractOutside}
-          onEscapeKeyDown={handleEscapeKeyDown}>
+          onEscapeKeyDown={handleEscapeKeyDown}
+          style={{
+            ...makeWidth(config?.width)
+          }}>
           <DialogHeader className={cn(config?.title ? '' : 'hidden')}>
             <DialogTitle>{config?.title}</DialogTitle>
           </DialogHeader>
