@@ -72,7 +72,7 @@ Each overlay type accepts a configuration object:
 - **SheetConfig**: extends Base + `resizable`, `width`
 - **DrawerConfig**: extends Base + `width`
 - **DialogConfig**: extends Base + `centered`, `width`
-- **ConfirmConfig**: extends Dialog + `cancelText`, `okText`, `variant`, `danger`, `onComplete`, `onAbort`
+- **ConfirmConfig**: extends Dialog + `cancelText`, `okText`, `danger`, `onComplete`, `onAbort`
 
 ## Development Commands
 
@@ -110,10 +110,6 @@ packages/interactive/src/
 ```
 
 ## Known Issues
-
-### Documentation
-- README.md line 78: Typo "tiele" should be "title"
-- ConfirmConfig has both `danger?` and `variant?` properties (inconsistent naming)
 
 ### Technical Limitations
 1. **No overlay stacking**: Can't show a confirmation dialog on top of an open sheet

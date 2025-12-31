@@ -54,8 +54,8 @@ function MyComponent() {
   };
 
   const handleConfirm = async () => {
-    const confirmed = await $.confirm("Are you sure you want to delete this?", {
-      variant: 'destructive',
+    const confirmed = await $.confirm('Are you sure you want to delete this?', {
+      danger: true,
       okText: 'Delete',
     })
     if (confirmed) {
@@ -90,8 +90,8 @@ $.sheet(DialogContent, {}, {
 })
 ```
 ```tsx
-$.confirm("Are you sure you want to delete this?", {
-  variant: 'destructive',
+$.confirm('Are you sure you want to delete this?', {
+  danger: true,
   okText: 'Delete',
 })
 ```
@@ -127,7 +127,7 @@ interface ConfirmConfig extends DialogConfig {
   title?: string;
   cancelText?: string;
   okText?: string;
-  variant?: 'destructive' | 'default';
+  danger?: boolean;
   onComplete?: () => void;
   onAbort?: () => void;
 }

@@ -46,7 +46,6 @@ export interface ConfirmConfig extends DialogConfig {
   danger?: boolean
   cancelText?: string
   okText?: string
-  variant?: 'destructive' | 'default'
   onComplete?: () => void
   onAbort?: () => void
 }
