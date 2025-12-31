@@ -6,9 +6,40 @@ Maybe you don't need to embed your own *Dialog*, or Drawer, or Sheet, or Confirm
 
 - **Unified API**: Manage all your overlays with a single hook `useInteractive()`.
 - **Component Injection**: Pass your own React components to be rendered inside overlays.
-- **Flexible**: Supports Sheets (sidebar), Drawers (bottom sheet), Dialogs (modals), Confirmation prompts, and Toasts.
+- **Flexible**: Supports Sheets (drawers from bottom), Drawers (side panel from right), Dialogs (modals), Confirmation prompts, and Toasts.
 - **TypeScript**: Fully typed for excellent developer experience.
 - promisified `confirm()`: Awaitable confirmation dialogs.
+
+## Overlays
+* `$.sheet()`
+   a panel opens from `bottom`
+* `$.drawer()`
+   a side panel opens from `right`
+* `$.dialog()`
+   open a dialog
+* `$.confirm()`
+   confirmation before specific action
+* `$.toast()`
+   toast notification
+
+## Caveats
+
+The sheet/drawer definitions are opposite to the `Shadcn UI terminology` but are consistent with the `standard UI terminology` (Material Design, iOS).
+
+For `Claude` says that:
+
+> But "drawer" typically means sidebar in most UI libraries. This naming could confuse users.
+>
+> ...
+> But in standard UI terminology (Material Design, iOS, shadcn/ui):
+> * "Sheet" = bottom drawer
+> * "Drawer" = side navigation
+>
+> Your library has them backwards. This will confuse every developer coming from other libraries.
+
+### So
+This package swaps drawer and sheet. to avoid confusion.
+
 
 ## Installation
 

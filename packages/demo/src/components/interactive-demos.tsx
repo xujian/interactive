@@ -69,42 +69,46 @@ export const InteractiveDemos = () => {
   const demos = [
     {
       title: 'Sheet',
-      description: 'A side-sheet overlay that slides in from the edge.',
+      description: 'A bottom-sheet drawer often used on mobile.',
       code: `$.sheet(
-  OrderDetails,
-  { id: '8adc9b2f64681d62' },
+  ActivityGoal,
+  { user: '8adc9b2f64681d62' },
   {
-    title: 'Order details',
-    width: '80vw',
     dismissible: true,
     resizable: true
   }
 )`,
       run: () =>
         $.sheet(
-          OrderDetails,
-          { id: '8adc9b2f64681d62' },
+          ActivityGoal,
+          { user: '8adc9b2f64681d62' },
           {
-            title: 'Order details',
-            width: '80vw',
-            dismissible: true,
+            title: '',
             resizable: true
           }
         )
     },
     {
       title: 'Drawer',
-      description: 'A bottom-sheet drawer often used on mobile.',
+      description: 'A side-sheet overlay that slides in from the edge.',
       code: `$.drawer(
-  DrawerDemoContent, 
-  { user: '8adc9b2f64681d62' },
-  { title: '' }
+  OrderDetails, 
+  { id: 'bebe5d3a04d737b6' },
+  {
+    title: 'Order details', 
+    width: '80vw',
+    dismissible: true,
+  }
 )`,
       run: () =>
         $.drawer(
-          ActivityGoal,
-          { user: '8adc9b2f64681d62' },
-          { title: '' }
+          OrderDetails,
+          { id: 'bebe5d3a04d737b6' },
+          {
+            title: 'Order details',
+            width: '80vw',
+            dismissible: true,
+          }
         )
     },
     {
@@ -122,7 +126,10 @@ export const InteractiveDemos = () => {
         $.dialog(
           Login,
           {},
-          { title: 'Login', width: 400 }
+          {
+            title: 'Login',
+            width: 600
+          }
         )
     },
     {
@@ -131,7 +138,7 @@ export const InteractiveDemos = () => {
       code: `const result = await $.confirm(
   'Are you sure to delete the address?', 
   {
-    title: 'please confirm',
+    title: 'Please confirm',
     danger: true,
     okText: 'Delete',
     cancelText: 'Wait a minute'

@@ -8,18 +8,27 @@ import {
   useState,
 } from 'react'
 import { toast as sonner } from 'sonner'
-import { Button } from './components/ui/button'
+import { ConfirmContent } from './components/confirm'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from './components/ui/dialog'
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from './components/ui/drawer'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from './components/ui/sheet'
-import { X } from 'lucide-react'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from './components/ui/drawer'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from './components/ui/sheet'
+import { VisuallyHidden } from './components/ui/visually-hidden'
 import { cn } from './lib/utils'
-import { ConfirmContent } from './components/confirm'
 
 export interface BaseInteractiveConfig {
   dismissible?: boolean
@@ -61,7 +70,7 @@ export interface ToastOptions extends BaseInteractiveConfig {
 export type InteractiveContentProps = {
   onAbort?: () => void
   onComplete?: () => void
-}
+};
 
 /**
  * generic type of the content component
@@ -71,24 +80,48 @@ export type MakeInteractiveContentProps<T extends object> = T &
 /*
  * Comppnents that embed into interactive overlays
  **/
-export type InteractiveContent<T extends object> = ComponentType<MakeInteractiveContentProps<T>>
+export type InteractiveContent<T extends object> = ComponentType<
+  MakeInteractiveContentProps<T>
+>;
 
 interface InteractiveContextType {
+  /**
+   * open a sheet (from bottom)
+   */
   sheet: <T extends object>(
     component: InteractiveContent<T>,
     props?: T,
     config?: SheetConfig
   ) => void
+  /**
+   * open a drawer (from right)
+   * @param component
+   * @param props
+   * @param config
+   * @returns
+   */
   drawer: <T extends object>(
     component: InteractiveContent<T>,
     props?: T,
     config?: DrawerConfig
   ) => void
+  /**
+   * open a dialog (centered)
+   * @param component
+   * @param props
+   * @param config
+   * @returns
+   */
   dialog: <T extends object>(
     component: InteractiveContent<T>,
     props?: T,
     config?: DialogConfig
   ) => void
+  /**
+   * open a confirmation dialog
+   * @param message
+   * @param config
+   */
   confirm(
     message: string | ReactNode,
     config: ConfirmConfig & { onComplete: () => void }
@@ -97,6 +130,11 @@ interface InteractiveContextType {
     message: string | ReactNode,
     config?: Omit<ConfirmConfig, 'onComplete'>
   ): Promise<boolean>
+  /**
+   * display a toast message
+   * @param message
+   * @param config
+   */
   toast: (message: string, config?: ToastOptions) => void
   clear: () => void
 }
@@ -110,7 +148,7 @@ interface InteractiveProviderProps {
 type OverlayType = 'sheet' | 'drawer' | 'dialog' | 'confirm'
 
 interface OverlayState {
-  type: OverlayType
+  type: OverlayType;
   component: InteractiveContent<any>
   props?: any
   config?: SheetConfig | DrawerConfig | DialogConfig | ConfirmConfig
@@ -121,10 +159,10 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
   const [overlayState, setOverlayState] = useState<OverlayState | null>(null)
 
   /**
-   * opens a sheet (from side)
-   * @param Component 
-   * @param props 
-   * @param config 
+   * opens a sheet (from below)
+   * @param Component
+   * @param props
+   * @param config
    */
   const sheet = <T extends object>(
     component: InteractiveContent<T>,
@@ -136,10 +174,10 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
   }
 
   /**
-   * opens a drawer (from below)
-   * @param Component 
-   * @param props 
-   * @param config 
+   * opens a drawer (from side)
+   * @param Component
+   * @param props
+   * @param config
    */
   const drawer = <T extends object>(
     component: InteractiveContent<T>,
@@ -152,9 +190,9 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
 
   /**
    * opens a dialog (always centered)
-   * @param Component 
-   * @param props 
-   * @param config 
+   * @param Component
+   * @param props
+   * @param config
    */
   const dialog = <T extends object>(
     component: InteractiveContent<T>,
@@ -166,34 +204,33 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
   }
 
   /**
-   * opens a confirmation dialog 
-   * @param message 
-   * @param config 
-   * @returns 
+   * opens a confirmation dialog
+   * @param message
+   * @param config
+   * @returns
    */
-  function confirm(
-    message: string | ReactNode,
-    config: ConfirmConfig
-  ): void
+  function confirm(message: string | ReactNode, config: ConfirmConfig): void
   function confirm(
     message: string | ReactNode,
     config?: Omit<ConfirmConfig, 'onComplete'>
-  ): Promise<boolean>
+  ): Promise<boolean>;
   function confirm(
     message: string | ReactNode,
     config?: ConfirmConfig
   ): Promise<boolean> | void {
     if (config?.onComplete) {
       // return void when onComplete provided
-      setOverlayState({ 
-        type: 'confirm', 
-        component: ConfirmContent, 
+      setOverlayState({
+        type: 'confirm',
+        component: ConfirmContent,
         props: {
           message,
           config,
-          onComplete: config?.onComplete, 
-          onAbort: config?.onAbort}, 
-        config })
+          onComplete: config?.onComplete,
+          onAbort: config?.onAbort,
+        },
+        config,
+      });
       setIsOpen(true)
       return void 0
     }
@@ -204,10 +241,10 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         resolve(true)
       }
       const onAbort = () => {
-        setIsOpen(false)
-        resolve(false)
+        setIsOpen(false);
+        resolve(false);
       }
-      const dummyProps = {}
+      const dummyProps = {};
       setOverlayState({
         type: 'confirm',
         component: ConfirmContent,
@@ -215,32 +252,33 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
           message,
           config,
           onComplete,
-          onAbort
+          onAbort,
         },
-        config})
-      setIsOpen(true)
+        config,
+      })
+      setIsOpen(true);
     })
   }
 
   /**
    * opens a toast
-   * @param message 
-   * @param config 
+   * @param message
+   * @param config
    */
   const toast = (message: string, config?: ToastOptions) => {
-    const type = config?.type || 'info'
+    const type = config?.type || 'info';
     switch (type) {
       case 'success':
-        sonner.success(message, config)
+        sonner.success(message, config);
         break
       case 'warning':
-        sonner.warning(message, config)
+        sonner.warning(message, config);
         break
       case 'error':
-        sonner.error(message, config)
+        sonner.error(message, config);
         break
       default:
-        sonner.info(message, config)
+        sonner.info(message, config);
         break
     }
   }
@@ -250,9 +288,14 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
    */
   const clear = () => {
     setIsOpen(false)
-  }
+  };
 
-  const { type, component: ContentComponent, props, config } = overlayState || {}
+  const {
+    type,
+    component: ContentComponent,
+    props,
+    config,
+  } = overlayState || {}
 
   // Helper to handle dismissal prevention for Radix (Sheet/Dialog)
   const handleInteractOutside = (e: any) => {
@@ -265,65 +308,93 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
     if (config?.dismissible === false) {
       e.preventDefault()
     }
-  }
+  };
 
   const onComplete = () => {
     clear()
     props?.onComplete?.()
-  }
+  };
 
   const onAbort = () => {
     clear()
     props?.onAbort?.()
-  }
+  };
 
   const makeWidth = (value?: number | string) => {
     return value
       ? {
-          width: typeof value === 'number'
-            ? `${value}px`
-            : value,
+          width: typeof value === 'number' ? `${value}px` : value,
         }
       : {}
-  }
+  };
 
   // Helper for Vaul (Drawer) dismissal
   const isDismissible = config?.dismissible !== false
 
   return (
     <InteractiveContext.Provider
-      value={{ sheet, drawer, dialog, confirm, toast, clear }}>
+      value={{ sheet, drawer, dialog, confirm, toast, clear }}
+    >
       {children}
-      <Sheet open={isOpen && type === 'sheet'} onOpenChange={setIsOpen}>
+      <Sheet
+        open={isOpen && type === 'sheet'}
+        onOpenChange={setIsOpen}
+        dismissible={isDismissible}
+      >
         <SheetContent
-          side={'right'}
-          className={cn('interactive-sheet sm:max-w-[100vw]', config?.className)}
+          className={cn(
+            'interactive-sheet sm:max-w-[100vw]',
+            config?.className
+          )}
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={handleEscapeKeyDown}
           style={{
-            ...makeWidth(config?.width)
-          }}>
-          <SheetHeader className='flex flex-row items-center justify-between'>
-            <SheetTitle>{config?.title || 'Sheet'}</SheetTitle>
-          </SheetHeader>
+            ...makeWidth(config?.width),
+          }}
+        >
+          {config?.title ? (
+            <SheetHeader className='flex flex-row items-center justify-between'>
+              <SheetTitle>{config?.title}</SheetTitle>
+            </SheetHeader>
+          ) : (
+            <VisuallyHidden>
+              <SheetTitle>Sheet</SheetTitle>
+            </VisuallyHidden>
+          )}
           {type === 'sheet' && ContentComponent && (
-            <ContentComponent {...props} onAbort={onAbort} onComplete={onComplete} />
+            <ContentComponent
+              {...props}
+              onAbort={onAbort}
+              onComplete={onComplete}
+            />
           )}
         </SheetContent>
       </Sheet>
-      <Drawer
-        open={isOpen && type === 'drawer'}
-        onOpenChange={setIsOpen}
-        dismissible={isDismissible}>
-        <DrawerContent className={cn('interactive-drawer flex-col items-center justify-center',config?.className)}
+      <Drawer open={isOpen && type === 'drawer'} onOpenChange={setIsOpen}>
+        <DrawerContent
+          className={cn('interactive-drawer flex-col', config?.className)}
+          side={'right'}
+          onInteractOutside={handleInteractOutside}
+          onEscapeKeyDown={handleEscapeKeyDown}
           style={{
-            ...makeWidth(config?.width)
-          }}>
-          <DrawerHeader className={cn(config?.title ? '' : 'hidden')}>
-            <DrawerTitle>{config?.title}</DrawerTitle>
-          </DrawerHeader>
+            ...makeWidth(config?.width),
+          }}
+        >
+          {config?.title ? (
+            <DrawerHeader className={cn(config?.title ? '' : 'hidden')}>
+              <DrawerTitle>{config?.title}</DrawerTitle>
+            </DrawerHeader>
+          ) : (
+            <VisuallyHidden>
+              <DrawerTitle>Drawer</DrawerTitle>
+            </VisuallyHidden>
+          )}
           {type === 'drawer' && ContentComponent && (
-            <ContentComponent {...props} onAbort={onAbort} onComplete={onComplete} />
+            <ContentComponent
+              {...props}
+              onAbort={onAbort}
+              onComplete={onComplete}
+            />
           )}
         </DrawerContent>
       </Drawer>
@@ -333,13 +404,24 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={handleEscapeKeyDown}
           style={{
-            ...makeWidth(config?.width)
-          }}>
-          <DialogHeader className={cn(config?.title ? '' : 'hidden')}>
-            <DialogTitle>{config?.title}</DialogTitle>
-          </DialogHeader>
+            ...makeWidth(config?.width),
+          }}
+        >
+          {config?.title ? (
+            <DialogHeader>
+              <DialogTitle>{config?.title}</DialogTitle>
+            </DialogHeader>
+          ) : (
+            <VisuallyHidden>
+              <DialogTitle>Dialog</DialogTitle>
+            </VisuallyHidden>
+          )}
           {type === 'dialog' && ContentComponent && (
-            <ContentComponent {...props} onAbort={onAbort} onComplete={onComplete} />
+            <ContentComponent
+              {...props}
+              onAbort={onAbort}
+              onComplete={onComplete}
+            />
           )}
         </DialogContent>
       </Dialog>
@@ -347,19 +429,23 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         <DialogContent
           className={cn('interactive-confirm', config?.className)}
           onInteractOutside={handleInteractOutside}
-          onEscapeKeyDown={handleEscapeKeyDown}>
+          onEscapeKeyDown={handleEscapeKeyDown}
+        >
           <DialogHeader>
             <DialogTitle>{config?.title || 'Confirm'}</DialogTitle>
           </DialogHeader>
           {type === 'confirm' && ContentComponent && (
-            <ContentComponent {...props} onAbort={onAbort} onComplete={onComplete} />
+            <ContentComponent
+              {...props}
+              onAbort={onAbort}
+              onComplete={onComplete}
+            />
           )}
         </DialogContent>
       </Dialog>
     </InteractiveContext.Provider>
   )
 }
-
 
 /**
  * @description call this hook to open an interactive component
