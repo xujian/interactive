@@ -3,7 +3,7 @@ import { InteractiveDemos } from '../components/interactive-demos'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="container mx-auto py-12 px-4 md:px-8">
       <InteractiveDemos />
       <Toaster />
     </main>

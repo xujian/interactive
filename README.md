@@ -40,6 +40,7 @@ For `Claude` says that:
 ### So
 This package swaps drawer and sheet. to avoid confusion.
 
+![Drawer = from right, Sheet = from bottom](./packages/demo/public/drawer-and-sheet.svg)
 
 ## Installation
 

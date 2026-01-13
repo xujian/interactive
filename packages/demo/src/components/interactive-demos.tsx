@@ -68,6 +68,27 @@ export const InteractiveDemos = () => {
 
   const demos = [
     {
+      title: 'Dialog',
+      description: 'A modal dialog for focused interactions.',
+      code: `$.dialog(
+  Login,
+  {},
+  {
+    title: 'Login',
+    width: 400
+  }
+)`,
+      run: () =>
+        $.dialog(
+          Login,
+          {},
+          {
+            title: 'Login',
+            width: 600
+          }
+        )
+    },
+    {
       title: 'Sheet',
       description: 'A bottom-sheet drawer often used on mobile.',
       code: `$.sheet(
@@ -108,27 +129,6 @@ export const InteractiveDemos = () => {
             title: 'Order details',
             width: '80vw',
             dismissible: true,
-          }
-        )
-    },
-    {
-      title: 'Dialog',
-      description: 'A modal dialog for focused interactions.',
-      code: `$.dialog(
-  Login,
-  {},
-  {
-    title: 'Login',
-    width: 400
-  }
-)`,
-      run: () =>
-        $.dialog(
-          Login,
-          {},
-          {
-            title: 'Login',
-            width: 600
           }
         )
     },
