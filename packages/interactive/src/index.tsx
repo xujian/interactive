@@ -372,7 +372,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
       </Sheet>
       <Drawer open={isOpen && type === 'drawer'} onOpenChange={setIsOpen}>
         <DrawerContent
-          className={cn('interactive-drawer flex-col', config?.className)}
+          className={cn('interactive-drawer w-full md:w-3/4 lg:w-1/2 flex-col', config?.className)}
           side={'right'}
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={handleEscapeKeyDown}
@@ -400,7 +400,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
       </Drawer>
       <Dialog open={isOpen && type === 'dialog'} onOpenChange={setIsOpen}>
         <DialogContent
-          className={cn('interactive-dialog', config?.className)}
+          className={cn('interactive-dialog rounded-lg', config?.className)}
           onInteractOutside={handleInteractOutside}
           onEscapeKeyDown={handleEscapeKeyDown}
           style={{
