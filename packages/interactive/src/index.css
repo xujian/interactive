@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @plugin "tailwindcss-animate";
-@source "../src";
+@source ".";
 
 :root {
   --background: oklch(1 0 0);

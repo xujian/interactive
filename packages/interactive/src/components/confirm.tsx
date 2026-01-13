@@ -1,9 +1,13 @@
-import { ConfirmConfig, MakeInteractiveContentProps } from '../index'
+import { ReactNode } from 'react'
+import {
+  ConfirmConfig,
+  MakeInteractiveContentProps,
+} from '../index'
 import { Button } from './ui/button'
 
 export interface ConfirmContentProps {
-  message: string
-  config: ConfirmConfig
+  message: string | ReactNode
+  config?: ConfirmConfig
 }
 
 export const ConfirmContent = ({
