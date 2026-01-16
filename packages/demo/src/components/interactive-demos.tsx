@@ -81,7 +81,15 @@ export const InteractiveDemos = () => {
       run: () =>
         $.dialog(
           Login,
-          {},
+          {
+            onComplete: () => {
+              $.toast('Login successful', { type: 'success' })
+            },
+            onAbort: () => {
+              console.log('Login cancelled')
+              $.toast('Login cancelled', { type: 'info' })
+            }
+          },
           {
             title: 'Login',
             width: 600
@@ -124,10 +132,18 @@ export const InteractiveDemos = () => {
       run: () =>
         $.drawer(
           OrderDetails,
-          { id: 'bebe5d3a04d737b6' },
+          {
+            id: 'bebe5d3a04d737b6',
+            onComplete: () => {
+              $.toast('Order details saved', { type: 'success' })
+            },
+            onAbort: () => {
+              console.log('Order details cancelled')
+              $.toast('Order details cancelled', { type: 'info' })
+            }
+          },
           {
             title: 'Order details',
-            width: '80vw',
             dismissible: true,
           }
         )
@@ -151,10 +167,10 @@ if (result) {
 }`,
       run: async () => {
         const result = await $.confirm('Are you sure to delete the address?', {
-        title: 'Please confirm',
-        danger: true,
-        okText: 'Delete',
-        cancelText: 'Wait a minute'
+          title: 'Please confirm',
+          danger: true,
+          okText: 'Delete',
+          cancelText: 'Wait a minute'
         })
         if (result) {
           $.toast('Address has been deleted', { type: 'success' })

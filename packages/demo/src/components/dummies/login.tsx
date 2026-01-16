@@ -21,8 +21,6 @@ export const Login = ({
     if (state.timestamp && state.timestamp !== lastProcessedTimestamp.current) {
       lastProcessedTimestamp.current = state.timestamp
       if (state.success) {
-        console.log('Login successful')
-        toast('Login successful', { type: 'success' })
         onComplete?.()
       } else if (state.message) {
         toast(state.message, { type: 'error' })
