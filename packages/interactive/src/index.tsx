@@ -67,7 +67,7 @@ export interface ToastOptions extends BaseInteractiveConfig {
 /**
  * enforce that interactive content components have onAbort and onComplete props
  */
-export type InteractiveContentProps = {
+export type InteractiveContentRootProps = {
   onAbort?: () => void
   onComplete?: () => void
 };
@@ -75,22 +75,22 @@ export type InteractiveContentProps = {
 /**
  * generic type of the content component
  */
-export type MakeInteractiveContentProps<T extends object> = T &
-  InteractiveContentProps
+export type InteractiveContentProps<T extends {}> = T &
+  InteractiveContentRootProps
 /*
  * Comppnents that embed into interactive overlays
  **/
-export type InteractiveContent<T extends object> = ComponentType<
-  MakeInteractiveContentProps<T>
+export type InteractiveContent<T extends {}> = ComponentType<
+  InteractiveContentProps<T>
 >;
 
 interface InteractiveContextType {
   /**
    * open a sheet (from bottom)
    */
-  sheet: <T extends object>(
+  sheet: <T extends {}>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: SheetConfig
   ) => void
   /**
@@ -100,9 +100,9 @@ interface InteractiveContextType {
    * @param config
    * @returns
    */
-  drawer: <T extends object>(
+  drawer: <T extends {}>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: DrawerConfig
   ) => void
   /**
@@ -112,9 +112,9 @@ interface InteractiveContextType {
    * @param config
    * @returns
    */
-  dialog: <T extends object>(
+  dialog: <T extends {}>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: DialogConfig
   ) => void
   /**
@@ -186,7 +186,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
   const writeState = <T extends {}>(
     type: OverlayType,
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: BaseInteractiveConfig
   ) => {
     setState((prev) => ({
@@ -254,7 +254,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
    */
   const sheet = <T extends object>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: SheetConfig
   ) => {
     writeState('sheet', component, props, config)
@@ -269,7 +269,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
    */
   const drawer = <T extends object>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: DrawerConfig
   ) => {
     writeState('drawer', component, props, config)
@@ -284,7 +284,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
    */
   const dialog = <T extends object>(
     component: InteractiveContent<T>,
-    props?: MakeInteractiveContentProps<T>,
+    props?: InteractiveContentProps<T>,
     config?: DialogConfig
   ) => {
     writeState('dialog', component, props, config)
@@ -437,6 +437,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         onOpenChange={(value) => {
           if (value === false) {
             setIsSheetOpen(false)
+            state.callbacks.sheet?.onAbort?.()
             clearState('sheet')
           }
         }}>
@@ -467,6 +468,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         onOpenChange={(value) => {
           if (value === false) {
             setIsDrawerOpen(false)
+            state.callbacks.drawer?.onAbort?.()
             clearState('drawer')
           }
         }}>
@@ -495,6 +497,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         onOpenChange={(value) => {
           if (value === false) {
             setIsDialogOpen(false)
+            state.callbacks.dialog?.onAbort?.()
             clearState('dialog')
           }
         }}>
@@ -522,6 +525,7 @@ export const InteractiveProvider = ({ children }: InteractiveProviderProps) => {
         onOpenChange={(value) => {
           if (value === false) {
             setIsConfirmOpen(false)
+            state.callbacks.confirm?.onAbort?.()
             clearState('confirm')
           }
         }}>
